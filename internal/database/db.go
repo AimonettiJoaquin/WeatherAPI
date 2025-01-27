@@ -3,6 +3,8 @@ package database
 import (
 	"database/sql"
 	"log"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func Connect(databaseUrl string) (*sql.DB, error) {
@@ -23,42 +25,14 @@ func CreateUsersTable(db *sql.DB) error {
 			id INT AUTO_INCREMENT PRIMARY KEY,
 			name VARCHAR(255) NOT NULL,
 			email VARCHAR(255) NOT NULL UNIQUE,
-			password VARCHAR(255) NOT NULL
+			password VARCHAR(255) NOT NULL,
+			optout BOOLEAN DEFAULT FALSE,
+			notification_time VARCHAR(5) DEFAULT '08:00'
 		)
 	`)
 	if err != nil {
 		return err
 	}
 	log.Println("Table Users created successfully")
-	return nil
-}
-
-func CreateCommentsTable(db *sql.DB) error {
-	_, err := db.Exec(`
-		CREATE TABLE IF NOT EXISTS comments (
-			id INT AUTO_INCREMENT PRIMARY KEY,
-			id_user INT NOT NULL,
-			id_movie INT NOT NULL,
-			comment VARCHAR(255) NOT NULL
-		)
-	`)
-	if err != nil {
-		return err
-	}
-	log.Println("Table Comments created successfully")
-	return nil
-}
-
-func CreateMovieTable(db *sql.DB) error {
-	_, err := db.Exec(`
-		CREATE TABLE IF NOT EXISTS movies (
-			id INT PRIMARY KEY,
-			counter INT
-		)
-	`)
-	if err != nil {
-		return err
-	}
-	log.Println("Table Movie created successfully")
 	return nil
 }
