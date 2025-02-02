@@ -32,6 +32,7 @@ func main() {
 	// Create the routes
 	router := mux.NewRouter()
 	handlers.UserRouterHandlers(router, db)
+	handlers.WeatherRouterHandlers(router)
 
 	// Start the notification service
 	go services.ScheduleNotifications(db)
